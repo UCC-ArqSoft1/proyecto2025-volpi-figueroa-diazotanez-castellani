@@ -1,10 +1,13 @@
 package models
 
+import "time"
+
 type Usuario struct {
-	UsuarioID     uint          `gorm:"primaryKey;autoIncrement"`
-	Nombre        string        `gorm:"size:100;not null"`
-	Email         string        `gorm:"size:100;unique;not null"`
-	Password      string        `gorm:"size:256;not null"` // Aquí se almacena el hash
-	Rol           string        `gorm:"size:20;not null"`  // "socio" o "admin"
-	Inscripciones []Inscripcion `gorm:"foreignKey:UsuarioID"`
+	ID          uint      `gorm:"primaryKey;autoIncrement"` // Cambiado de UsuarioID a ID para mayor consistencia
+	UsuarioID   uint      `gorm:"primaryKey;autoIncrement"`
+	ActividadID uint      `gorm:"not null"` // ID de la actividad a la que se inscribe
+	Fecha       time.Time `gorm:"not null"` // Fecha de inscripción
+	//Relaciones
+	Usuario   Usuario   `gorm:"foreignKey:UsuarioID;references:ID"`   // Relación con el usuario que se inscribe
+	Actividad Actividad `gorm:"foreignKey:ActividadID;references:ID"` // Relación con la actividad a la que se inscribe
 }
